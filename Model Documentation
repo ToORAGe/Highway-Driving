@@ -1,0 +1,28 @@
+Project details
+
+
+1) The code implemented herein is based on the spline concept demonstrated in the Q&A video. 
+2) Finite states named  a) too close 
+			b) prepare_lane
+          		c) prepare_for_left 
+          		d) prepare_for_right
+          		e) lane_change 
+          		f) extremely_close
+
+	are used for path planning. 
+3) too_close tells us if the car in front of the ego vehicle is too close (within a distance of 30m). If this flag is activated the ref_vel (reference velocity) variable is 
+decremented by 0.224m/s (deceleration) 
+4) "prepare_lane" tells if the vehicle needs to change lane since the car in front of the current lane is too slow or too close. 
+5) "prepare_for_left" flag tells us if the left lane of the ego vehicle is free for lane change. A margin of 15m has been used in case of lane change i.e., if there are no 
+vehicles in the left lane within 15m in front or behind the furture porition of the ego vehicle, the ego vehicle can prepare to change lanes (either left or right 
+based on other vehicles)
+6) "prepare_for_right" flag tells us that the right lane of the current lane is free. 
+7) Preference is given to left lane in case both the left and right lanes of the current lane are free and the "prepare_lane" flag is activated. 
+8) The "lane_change" flag tells if either of the flags "prepare_for_left" or "prepare_for_right" is activated. 
+9) The "extremely_close" flag tells us if the vehicle in front is extremely close to the ego vehicle and within a margin of 15m. If this flag is activated(set to "true"),
+the deceleration is set to 0.5 m/s^2. (almost twice the normal deceleration), to avoid collision with vehicles. 
+10) 30 points have been used for the future path of the vehicle to avoid collisions as for some scenarios during testing, the vehicle ahead of the ego vehicle 
+suddenly changed lanes and resulted in collision. It was also observed that only 3 points are being used at each iteration i.e., each previous_path length was 30-3 = 27. 
+11) If none of the flags is activated and if the velocity of the car is below the speed limit fo 50 mph, the reference velocity is incremented (acceleration) by 0.224 m/s^2. 
+
+
